@@ -1,10 +1,10 @@
 # 依赖
 node_modules/
 
-# 构建产物（如果你想在仓库里保留 dist/ 便于直接安装，删掉这行）
+# 构建产物。如需随仓库分发可直接加载，请保持取消注释
 # dist/
 
-# 图标（由 scripts/make_icons.py 生成，如需随仓库分发可删掉这行）
+# 图标。由 scripts/make_icons.py 生成，当前随仓库分发
 # icons/
 
 # 系统与编辑器
@@ -15,14 +15,15 @@ desktop.ini
 .idea/
 *.swp
 
-# 临时文件
+# 临时文件（仅忽略仓库根目录下以 _ 开头的文件，
+# 不要写成 "_*"，否则会把 Chrome 国际化必需的 _locales/ 也忽略掉）
+/_*
 *.log
 *.tmp
-_*
-!src/**
 __pycache__/
 *.pyc
 
 # 个人数据（务必不要提交）
 简历数据*.json
 *.local.json
+.pii-local.txt

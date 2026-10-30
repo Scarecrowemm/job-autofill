@@ -148,11 +148,15 @@ scripts/
 ### 开发与测试
 
 ```bash
-python scripts/check_no_pii.py   # 隐私守卫
-node --test test/                # 单元测试（24 个用例）
-python scripts/build.py          # 构建
-npm run verify                   # 以上三步串起来
+python scripts/check_no_pii.py          # 隐私守卫
+node --test test/core.test.js           # 单元测试（24 个用例）
+python scripts/build.py                 # 构建
+python scripts/check_release.py         # 发布前验收
+
+npm run verify                          # 上面四步串起来
 ```
+
+**提交前务必重新构建并一起提交 `dist/`**，否则仓库里的构建产物会落后于源码。CI 会用 `git diff --exit-code -- dist` 检查这一点，不一致会直接红灯。
 
 没有 Node 环境时，直接用浏览器打开 `test/browser-check.html` 也能跑同一份断言（用例在 `test/cases.js`，两边共用）。
 

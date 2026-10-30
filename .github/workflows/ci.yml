@@ -23,24 +23,31 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Install Python deps
-        run: pip install pillow
-
-      # 1. 隐私守卫：默认模板必须是空的，且不得出现手机号/邮箱/身份证形态的硬编码
+      # 1. 隐私守卫：默认模板必须为空，且不得出现手机号/邮箱/身份证形态的硬编码
       - name: Check no PII
         run: python scripts/check_no_pii.py
 
-      # 2. 单元测试
+      # 2. 单元测试（显式指定文件，避免 test/cases.js 被测试发现规则误当作测试文件）
       - name: Unit tests
-        run: node --test test/
+        run: node --test test/core.test.js
 
-      # 3. 生成图标并构建
+      # 3. 构建。
+      #    刻意不在此处运行 make_icons.py：图标依赖系统中文字体，
+      #    Linux runner 上没有微软雅黑，重新生成会得到完全不同的图标。
+      #    图标随仓库提交，构建时直接复用。
       - name: Build
-        run: |
-          python scripts/make_icons.py
-          python scripts/build.py
+        run: python scripts/build.py
 
-      # 4. 产物完整性 + 发布前验收
+      # 4. dist 与 src 一致性：防止有人改了源码却忘记重新构建
+      - name: Check dist is up to date
+        run: |
+          if ! git diff --exit-code -- dist; then
+            echo "::error::dist/ 与重新构建的结果不一致。请在本地运行 python scripts/build.py 并提交 dist/ 的变更。"
+            exit 1
+          fi
+          echo "dist/ 与 src/ 一致 ✅"
+
+      # 5. 产物完整性 + 发布前验收
       - name: Validate release
         run: python scripts/check_release.py
 

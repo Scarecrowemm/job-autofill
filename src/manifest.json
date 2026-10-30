@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "岗位投递助手",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "从简历数据自动填写招聘网站表单，支持自定义字段规则；填写结果可视化，未识别字段一目了然。",
   "permissions": ["storage", "scripting"],
   "host_permissions": ["http://*/*", "https://*/*"],

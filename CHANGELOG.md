@@ -2,6 +2,24 @@
 
 本项目遵循 [Keep a Changelog](https://keepachangelog.com/zh-CN/1.1.0/) 与 [语义化版本](https://semver.org/lang/zh-CN/)。
 
+## [2.0.1] - 2026-10-30
+
+仓库发布后的第一批修正，主要针对 CI 与工具链的可靠性。
+
+### 修复
+- **`make_icons.py` 在无中文字体的环境会静默渲染出豆腐块**：原来找不到字体时回退到 Pillow 默认位图字体，生成的图标是乱码方块。现在改为先用 `font.getmask()` 验证字形，找不到可用中文字体时退化为「文档 + 对勾」的纯几何图标，并打印提示。
+- **CI 中重新生成图标会污染产物**：Linux runner 没有微软雅黑，`make_icons.py` 生成的图标与仓库中提交的完全不同。CI 不再重新生成图标，直接复用仓库内的版本。
+
+### 变更
+- CI 单测改为显式指定 `node --test test/core.test.js`，避免 `test/cases.js` 被测试发现规则（`**/test/**/*.js`）误当作测试文件
+- CI 新增 **dist 一致性检查**：构建后对比 `git diff -- dist`，防止有人改了 `src/` 却忘记重新构建，导致仓库里的 `dist/` 是旧版本
+- `.gitignore` 的 `_*` 改为 `/_*`（只忽略仓库根目录）。原来的写法会连带忽略 Chrome 国际化必需的 `_locales/` 目录
+- `package.json` 补齐 `repository` / `author` / `homepage` / `bugs` / `engines` 字段，新增 `check:dist` 脚本
+- 移除 `prebuild` 钩子，避免本地构建时意外重新生成图标造成 diff 噪音
+- 新增 `PULL_REQUEST_TEMPLATE.md`
+
+---
+
 ## [2.0.0] - 2026-10-23
 
 首个开源版本。从个人脚本重构为可维护的工程结构。
