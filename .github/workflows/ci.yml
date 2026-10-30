@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: 校验 / 测试 / 构建
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Python deps
+        run: pip install pillow
+
+      # 1. 隐私守卫：默认模板必须是空的，且不得出现手机号/邮箱/身份证形态的硬编码
+      - name: Check no PII
+        run: python scripts/check_no_pii.py
+
+      # 2. 单元测试
+      - name: Unit tests
+        run: node --test test/
+
+      # 3. 生成图标并构建
+      - name: Build
+        run: |
+          python scripts/make_icons.py
+          python scripts/build.py
+
+      # 4. 产物完整性 + 发布前验收
+      - name: Validate release
+        run: python scripts/check_release.py
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: job-autofill-dist
+          path: dist/
+          retention-days: 30

@@ -1,0 +1,49 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="utf-8"><title>模拟网申</title>
+<style>body{font-family:"Microsoft YaHei";font-size:13px;padding:24px;max-width:860px;margin:0 auto;background:#fff;color:#222}
+.f{margin-bottom:12px;display:flex;align-items:flex-start;gap:10px}
+.f>label{width:120px;flex:0 0 120px;text-align:right;padding-top:6px}
+.f input,.f select,.f textarea{flex:1;padding:6px 9px;border:1px solid #ccc;border-radius:4px;font:inherit}
+.f textarea{min-height:64px}
+.r2{display:flex;gap:16px}.r2>.f{flex:1}
+h3{margin:20px 0 8px;color:#0d3b66;border-bottom:1px solid #ddd;padding-bottom:4px}</style></head>
+<body>
+<h2>2027 校园招聘 · 在线申请（模拟表单）</h2>
+<h3>基本信息</h3>
+<div class="r2">
+<div class="f"><label>姓名</label><input type="text" name="realname"></div>
+<div class="f"><label>性别</label><span><label><input type="radio" name="gender" value="1">男</label><label style="margin-left:12px"><input type="radio" name="gender" value="2">女</label></span></div>
+</div>
+<div class="r2">
+<div class="f"><label>政治面貌</label><select name="political"><option value="">请选择</option><option>中共党员</option><option>共青团员</option><option>群众</option></select></div>
+<div class="f"><label>出生年月</label><input type="month" name="birthday"></div>
+</div>
+<div class="r2">
+<div class="f"><label>手机号码</label><input type="tel" name="mobile"></div>
+<div class="f"><label>电子邮箱</label><input type="email" name="email"></div>
+</div>
+<div class="f"><label>身份证号</label><input type="text" name="idcard"></div>
+<h3>教育背景</h3>
+<div class="r2">
+<div class="f"><label>毕业院校</label><input type="text" name="school"></div>
+<div class="f"><label>所学专业</label><input type="text" name="major"></div>
+</div>
+<div class="r2">
+<div class="f"><label>学历</label><select name="education"><option value="">请选择</option><option>大专</option><option>本科</option><option>硕士</option></select></div>
+<div class="f"><label>毕业时间</label><input type="month" name="graduation"></div>
+</div>
+<h3>求职意向</h3>
+<div class="r2">
+<div class="f"><label>应聘岗位</label><input type="text" name="position"></div>
+<div class="f"><label>期望工作地点</label><input type="text" name="city"></div>
+</div>
+<div class="f"><label>到岗时间</label><input type="text" name="available"></div>
+<h3>经历</h3>
+<div class="f"><label>公司名称</label><input type="text" name="company"></div>
+<div class="f"><label>工作内容</label><textarea name="workdesc"></textarea></div>
+<div class="f"><label>项目名称</label><input type="text" name="projname"></div>
+<div class="f"><label>项目描述</label><textarea name="projdesc"></textarea></div>
+<h3>其他</h3>
+<div class="f"><label>自我评价</label><textarea name="selfeval"></textarea></div>
+<div class="f"><label>紧急联系人</label><input type="text" name="emname"></div>
+<div class="f"><label>紧急联系人电话</label><input type="text" name="emphone"></div>
+</body></html>

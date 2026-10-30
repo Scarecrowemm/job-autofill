@@ -1,0 +1,28 @@
+# 依赖
+node_modules/
+
+# 构建产物（如果你想在仓库里保留 dist/ 便于直接安装，删掉这行）
+# dist/
+
+# 图标（由 scripts/make_icons.py 生成，如需随仓库分发可删掉这行）
+# icons/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
+*.swp
+
+# 临时文件
+*.log
+*.tmp
+_*
+!src/**
+__pycache__/
+*.pyc
+
+# 个人数据（务必不要提交）
+简历数据*.json
+*.local.json

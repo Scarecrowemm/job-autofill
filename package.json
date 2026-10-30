@@ -1,0 +1,21 @@
+{
+  "name": "job-application-autofill",
+  "version": "2.0.0",
+  "private": true,
+  "description": "浏览器扩展：从简历数据自动填写招聘网站网申表单",
+  "license": "MIT",
+  "scripts": {
+    "build": "python scripts/build.py",
+    "icons": "python scripts/make_icons.py",
+    "prebuild": "python scripts/make_icons.py",
+    "test": "node --test test/",
+    "check:pii": "python scripts/check_no_pii.py",
+    "check:release": "python scripts/check_release.py",
+    "verify": "npm run check:pii && npm run test && npm run build && npm run check:release",
+    "format": "prettier --write \"src/**/*.{js,html,json}\" \"test/**/*.{js,html}\"",
+    "zip": "python -c \"import shutil; shutil.make_archive('release/job-autofill', 'zip', 'dist')\""
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  }
+}

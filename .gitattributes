@@ -1,0 +1,11 @@
+# 统一换行符：仓库内一律 LF，避免 Windows 提交污染
+* text=auto eol=lf
+
+# 二进制文件
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.zip binary
+*.crx binary

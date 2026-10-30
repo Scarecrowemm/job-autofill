@@ -1,0 +1,81 @@
+name: 字段填不进去 / 填错了
+description: 某个网站的某个字段没有被正确识别或填写
+title: "[站点适配] "
+labels: ["site-adapter"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢反馈！这类问题最有价值，补一条规则就能帮到所有用同一网站的人。
+
+  - type: input
+    id: site
+    attributes:
+      label: 目标网站
+      description: 域名即可（不需要完整链接，避免泄露你的投递记录）
+      placeholder: 例如：campus.xxx.com
+    validations:
+      required: true
+
+  - type: input
+    id: field
+    attributes:
+      label: 出问题的字段
+      description: 页面上显示的这个字段叫什么
+      placeholder: 例如：紧急联系人电话
+    validations:
+      required: true
+
+  - type: dropdown
+    id: symptom
+    attributes:
+      label: 具体现象
+      options:
+        - 完全没填
+        - 填了但填错了（填成了别的字段的值）
+        - 下拉框没选中
+        - 单选按钮没选中
+        - 日期格式不对
+        - 面板里显示"未识别"
+        - 其他
+    validations:
+      required: true
+
+  - type: textarea
+    id: html
+    attributes:
+      label: 该字段的 HTML（F12 复制）
+      description: |
+        在该页面按 F12，用元素选择器点一下目标输入框，把 `<input ...>` 或 `<select ...>` 那一行贴过来。
+        **请删掉 value 属性里的真实内容**，只保留 name / id / class / type。
+      render: html
+      placeholder: |
+        <input type="text" name="emergencyPhone" id="emergencyPhone" class="el-input__inner" placeholder="请输入紧急联系人电话">
+    validations:
+      required: true
+
+  - type: textarea
+    id: label
+    attributes:
+      label: 该字段的 label 文字
+      description: 页面上显示在输入框旁边的文字（通常就是 label 的内容）
+      placeholder: 紧急联系人电话
+    validations:
+      required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: 扩展版本
+      description: 在 chrome://extensions 页面能看到
+      placeholder: 2.0.0
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: 隐私确认
+      options:
+        - label: 我已确认上面贴出的内容不包含我的真实个人信息（身份证、手机号、真实姓名等）
+          required: true

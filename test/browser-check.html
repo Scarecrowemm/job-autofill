@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<title>单元测试 · 浏览器版</title>
+<style>
+  body { font-family: "Microsoft YaHei", system-ui, sans-serif; font-size: 13px; padding: 24px; max-width: 900px; margin: 0 auto; background: #f7fafc; color: #1f2937; }
+  h1 { font-size: 18px; color: #0d3b66; margin: 0 0 6px; }
+  .sub { color: #6b7280; font-size: 12px; margin-bottom: 16px; }
+  .summary { padding: 12px 16px; border-radius: 8px; font-weight: 700; margin-bottom: 16px; font-size: 14px; }
+  .summary.pass { background: #eafaf1; color: #1e8449; border: 1px solid #bfe8cf; }
+  .summary.fail { background: #fdedec; color: #c0392b; border: 1px solid #f5b7b1; }
+  .item { background: #fff; border: 1px solid #dbe4ee; border-radius: 6px; padding: 8px 12px; margin-bottom: 6px; }
+  .item .name { font-weight: 600; }
+  .item.ok .name::before { content: "✓ "; color: #1e8449; }
+  .item.bad { border-color: #f5b7b1; background: #fef6f6; }
+  .item.bad .name::before { content: "✗ "; color: #c0392b; }
+  .err { color: #c0392b; font-family: Consolas, monospace; font-size: 11.5px; margin-top: 4px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<h1>单元测试 · 浏览器版</h1>
+<div class="sub">
+  与 <code>test/core.test.js</code> 共用同一份断言（<code>test/cases.js</code>）。<br>
+  用途：本机没有 Node 时也能验证逻辑；CI 跑的是 Node 版。
+</div>
+<div id="summary" class="summary">运行中…</div>
+<div id="list"></div>
+
+<!-- 直接加载源码模块（它们本来就是共享作用域的普通脚本） -->
+<script src="../src/core/config.js"></script>
+<script src="../src/core/default-profile.js"></script>
+<script src="../src/core/utils.js"></script>
+<script src="../src/core/rules.js"></script>
+<script src="../src/core/filler.js"></script>
+<script src="./cases.js"></script>
+
+<script>
+(function () {
+  "use strict";
+
+  var results = [];
+
+  function test(name, fn) {
+    try {
+      fn();
+      results.push({ name: name, ok: true });
+    } catch (e) {
+      results.push({ name: name, ok: false, err: (e && e.message) || String(e) });
+    }
+  }
+
+  function fail(msg) {
+    throw new Error(msg);
+  }
+
+  var assert = {
+    ok: function (v, msg) {
+      if (!v) fail(msg || "期望为真，实际为 " + v);
+    },
+    equal: function (a, b, msg) {
+      if (a !== b) fail((msg ? msg + " —— " : "") + "期望 " + JSON.stringify(b) + "，实际 " + JSON.stringify(a));
+    },
+    deepEqual: function (a, b, msg) {
+      var sa = JSON.stringify(a);
+      var sb = JSON.stringify(b);
+      if (sa !== sb) fail((msg ? msg + " —— " : "") + "期望 " + sb + "，实际 " + sa);
+    }
+  };
+
+  var core = {
+    RULES: RULES,
+    DEFAULT_PROFILE: DEFAULT_PROFILE,
+    pickRule: pickRule,
+    pickOption: pickOption,
+    normalizeDateValue: normalizeDateValue,
+    isReal: isReal,
+    deepMerge: deepMerge,
+    getPath: getPath,
+    setPath: setPath
+  };
+
+  JAF_TEST_CASES(core, { test: test, assert: assert });
+
+  var pass = results.filter(function (r) { return r.ok; }).length;
+  var failCount = results.length - pass;
+
+  var sum = document.getElementById("summary");
+  sum.className = "summary " + (failCount ? "fail" : "pass");
+  sum.textContent = failCount
+    ? "✗ " + failCount + " 个用例失败 / 共 " + results.length + " 个"
+    : "✓ 全部通过（" + pass + " 个用例）";
+
+  var list = document.getElementById("list");
+  results.forEach(function (r) {
+    var d = document.createElement("div");
+    d.className = "item " + (r.ok ? "ok" : "bad");
+    d.innerHTML = '<span class="name">' + r.name + "</span>" +
+      (r.ok ? "" : '<div class="err">' + String(r.err).replace(/</g, "&lt;") + "</div>");
+    list.appendChild(d);
+  });
+
+  // 供自动化读取
+  window.__TEST_RESULT__ = { total: results.length, pass: pass, fail: failCount, results: results };
+})();
+</script>
+</body>
+</html>

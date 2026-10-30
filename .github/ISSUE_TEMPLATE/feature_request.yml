@@ -1,0 +1,41 @@
+name: 功能建议
+description: 希望支持新的能力或改进体验
+title: "[建议] "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: 你遇到的问题
+      description: 描述场景，而不是直接说解决方案
+      placeholder: 例如：我同时投技术岗和游戏岗，但期望岗位只能填一个，每次都要手动改
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: 你希望怎么解决
+    validations:
+      required: false
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: 涉及范围
+      options:
+        - 字段识别规则
+        - 数据填写页
+        - 填表面板
+        - 多套简历切换
+        - 站点适配
+        - 其他
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: willing
+    attributes:
+      label: 是否愿意自己提交 PR
+      options:
+        - label: 我可以提 PR
